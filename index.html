@@ -7,6 +7,18 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
   :root{--bloom:#C97B8F;--petal:#F2D7DF;--mist:#F8F4F5;--ink:#1E1418;--stem:#7A5C63;--leaf:#4E7C6B;--gold:#C9A96E;--bg:#FDFBFB;--return:#7B5EA7}
+  body.dark{--bloom:#D98FA2;--petal:#3A2530;--mist:#1E1520;--ink:#F0E8EC;--stem:#B89AA2;--leaf:#6BAE95;--gold:#D4AF7A;--bg:#120D10;--return:#A889D4}
+  body.dark header{background:#0C0809}
+  body.dark .stats-bar,body.dark .tabs,body.dark .form-card,body.dark .order-card,body.dark .modal,body.dark .edit-drawer,body.dark .date-filter-card,body.dark .sales-row,body.dark .date-summary,body.dark .return-banner{background:#1A1118;border-color:#3A2530}
+  body.dark input,body.dark select,body.dark textarea{background:#120D10;border-color:#3A2530;color:var(--ink)}
+  body.dark input:focus,body.dark select:focus,body.dark textarea:focus{background:#1A1118}
+  body.dark .status-option{background:#1A1118;color:var(--ink)}
+  body.dark .filter-chip,body.dark .quick-chip,body.dark .date-type-btn,body.dark .btn-sm,body.dark .btn-pdf{background:#1A1118;border-color:#3A2530;color:var(--stem)}
+  body.dark .filter-chip.active,body.dark .quick-chip.active,body.dark .date-type-btn.active{background:var(--bloom);border-color:var(--bloom);color:white}
+  body.dark .total-display{background:#1E1520}
+  body.dark .pdf-bar{background:#0C0809;border-color:#3A2530}
+  .moon-btn{background:none;border:none;cursor:pointer;font-size:18px;padding:0 0 0 10px;line-height:1;opacity:.85;transition:opacity .15s;margin-left:auto}
+  .moon-btn:active{opacity:1}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:15px}
   header{background:var(--ink);color:white;padding:18px 20px 14px;position:sticky;top:0;z-index:100}
@@ -178,6 +190,7 @@
   <div class="header-top">
     <span class="brand">Blink Blossom</span>
     <span class="brand-sub">Order Manager</span>
+    <button class="moon-btn" id="moonBtn" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
   </div>
 </header>
 <div class="pdf-bar">
@@ -766,6 +779,14 @@
     window.print();
     setTimeout(()=>{filterStatus=prevFilter;searchQuery=prevSearch;render();},500);
   }
+
+  function toggleDark(){
+    const dark=document.body.classList.toggle('dark');
+    document.getElementById('moonBtn').textContent=dark?'☀️':'🌙';
+    try{localStorage.setItem('bb_dark',dark?'1':'0');}catch(e){}
+  }
+  // restore preference
+  try{if(localStorage.getItem('bb_dark')==='1'){document.body.classList.add('dark');document.getElementById('moonBtn').textContent='☀️';}}catch(e){}
 
   applyQuickRange('today');
   loadOrders();
